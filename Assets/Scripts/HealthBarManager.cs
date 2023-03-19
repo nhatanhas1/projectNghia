@@ -5,12 +5,18 @@ using UnityEngine.UI;
 
 public class HealthBarManager : MonoBehaviour
 {
-    public Neko neko;
+    //public Neko neko;
+    public Neko2 neko;
     // Start is called before the first frame update
     public Image healthBar;
     public float healthAmount;
     public Image staminaBar;
     public float staminaAmount;
+
+    private void Awake()
+    {
+        neko = FindAnyObjectByType<Neko2>();
+    }
     void Start()
     {
        
