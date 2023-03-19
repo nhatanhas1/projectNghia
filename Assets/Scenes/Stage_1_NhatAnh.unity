@@ -4498,6 +4498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PetRed
       objectReference: {fileID: 0}
+    - target: {fileID: 4980015125858696410, guid: e58707be53ce181488598d8a2e9999f8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4980015125858696423, guid: e58707be53ce181488598d8a2e9999f8, type: 3}
       propertyPath: m_RootOrder
       value: 12
