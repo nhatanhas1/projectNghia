@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Neko2 : MonoBehaviour
+public class Neko2 : MonoBehaviour , IDamageable
 {
+    [SerializeField] PlayerAttack attackRadius;
+
     public int tempSpeed;
     public int moveSpeed; 
     public int runSpeed;
@@ -31,6 +33,7 @@ public class Neko2 : MonoBehaviour
     void Update()
     {
         CheckInput();
+        Attack();
     }
     private void FixedUpdate()
     {
@@ -38,6 +41,7 @@ public class Neko2 : MonoBehaviour
         Run();
         HealthConsume();
         Movement();
+        
     }
     void CheckInput()
     {
@@ -117,6 +121,21 @@ public class Neko2 : MonoBehaviour
             hp += 5;
             hp = Mathf.Clamp(hp, 0, maxHP);
         }
+    }
+
+    void Attack()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            attackRadius.AttackInRadius();
+            Debug.Log("Get Key downd");
+        }
+        
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Debug.Log("Player Take Damage");
     }
 
 }
