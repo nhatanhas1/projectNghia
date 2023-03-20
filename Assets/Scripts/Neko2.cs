@@ -103,7 +103,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         {
             myBD.velocity = new Vector3(moveDirection.x * tempSpeed, 0, moveDirection.y * tempSpeed);
             myBD.velocity = moveDirection * tempSpeed;
-            Debug.Log(myBD.velocity);
+            //Debug.Log(myBD.velocity);
 
             //if(Input.anyKeyDown==false)
             //{
@@ -199,14 +199,14 @@ public class Neko2 : MonoBehaviour , IDamageable
         if (Input.GetKeyDown(KeyCode.Space))
         {
             attackRadius.AttackInRadius();
-            Debug.Log("Get Key downd");
+            //Debug.Log("Get Key downd");
         }
         
     }
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("Player Take Damage");
+        //Debug.Log("Player Take Damage");
     }
 
 
