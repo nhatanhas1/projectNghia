@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Item")]
 public class ItemData : ScriptableObject
 {
-    [SerializeField] Sprite itemSprite;
+    public Sprite itemSprite;
     public enum ItemStype
     {
         a,

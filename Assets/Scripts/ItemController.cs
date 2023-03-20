@@ -9,10 +9,16 @@ public class ItemController : MonoBehaviour
     public List<ItemData> itemDatas = new List<ItemData>();
     public ItemData itemData;
     float healPoint;
+    [SerializeField] SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     void Start()
     {
-        healPoint = itemData.healPoint;
+        
     }
 
     // Update is called once per frame
@@ -21,13 +27,24 @@ public class ItemController : MonoBehaviour
         
     }
 
+    public void SetUp()
+    {
+        healPoint = itemData.healPoint;
+        spriteRenderer.sprite = itemData.itemSprite;
+    }
+
+    public void EatItem(Neko2 player)
+    {
+        player.hp += healPoint;
+        Destroy(gameObject);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<Neko2>() != null)
-        {
-            other.GetComponent<Neko2>().hp += healPoint;
-        }
+        //if(other.GetComponent<Neko2>() != null)
+        //{
+        //    other.GetComponent<Neko2>().hp += healPoint;
+        //}
         
     }
 

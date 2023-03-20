@@ -138,4 +138,8 @@ public class Neko2 : MonoBehaviour , IDamageable
         Debug.Log("Player Take Damage");
     }
 
+    void ConsumeItem()
+    {
+
+    }
 }

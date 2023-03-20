@@ -234,7 +234,10 @@ public class EnemyController : MonoBehaviour ,IDamageable
     {
         isDead = true;
         GameObject dropitem =  Instantiate(dropItem,transform.position, Quaternion.Euler(90, 0, 0));
-        dropitem.GetComponent<ItemController>().
+        ItemController itemController = dropitem.GetComponent<ItemController>();
+        int tmp = Random.Range(0, itemController.itemDatas.Count - 1);
+        itemController.itemData = itemController.itemDatas[1];
+        itemController.SetUp();
         Destroy(gameObject);
     }
 }
