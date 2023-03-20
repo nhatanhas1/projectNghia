@@ -19,6 +19,8 @@ public class Neko2 : MonoBehaviour , IDamageable
     public float timeBtwAttack;
     public float startTimeBtwAttack;
 
+    public int score;
+
     Animator animator;
     private string currentState;
 
@@ -44,6 +46,8 @@ public class Neko2 : MonoBehaviour , IDamageable
     [SerializeField] Vector3 moveDir;
 
     private Vector3 moveDirection;
+
+    public GameOver gameOver;
     void Start()
     {
         moveSpeed = 10;
@@ -251,6 +255,15 @@ public class Neko2 : MonoBehaviour , IDamageable
             myBD.constraints = RigidbodyConstraints.FreezePosition;
             isDead = true;
             ChangeAnimationState(NEKO_DEAD);
+            StartCoroutine(GameOver());
+            
         }
+    }
+
+    IEnumerator  GameOver()
+    {
+        yield return new WaitForSeconds(2.5f);
+        gameOver.Setup(score);
+      
     }
 }
