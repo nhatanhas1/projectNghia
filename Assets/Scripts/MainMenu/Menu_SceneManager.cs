@@ -18,7 +18,7 @@ public class Menu_SceneManager : MonoBehaviour
     }
     public void GameStart()
     {
-        SceneManager.LoadScene("Stage_1");        
+        SceneManager.LoadScene("Stage_1_NhatAnh");        
     }
     public void Quit()
     {

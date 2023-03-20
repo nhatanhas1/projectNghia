@@ -50,7 +50,7 @@ public class Neko2 : MonoBehaviour , IDamageable
     public GameOver gameOver;
     void Start()
     {
-        moveSpeed = 10;
+        tempSpeed = moveSpeed;
         myBD= GetComponent<Rigidbody>();  
         hp=maxHP; stamina=maxStamina;
         spriteRenderer=GetComponent<SpriteRenderer>();
@@ -90,7 +90,7 @@ public class Neko2 : MonoBehaviour , IDamageable
 
         moveDirection = new Vector3(moveX,0, moveY).normalized;
 
-        //Debug.Log("Input X la : " + moveX + " Input Y la" + moveY);
+        Debug.Log("Input X la : " + moveX + " Input Z la" + moveY);
     }
 
     void Movement()
@@ -106,10 +106,11 @@ public class Neko2 : MonoBehaviour , IDamageable
             //    moveDir = Vector3.zero;
             //    myBD.velocity = moveDir;
 
-            //}
+            //
             if (myBD.velocity.x < 0 && myBD.velocity.x >= -moveSpeed)
             {
                 ChangeAnimationState(NEKO_WALK);
+                return;
                 //this.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
             else if (myBD.velocity.x > 0 && myBD.velocity.x <= moveSpeed)
@@ -222,10 +223,10 @@ public class Neko2 : MonoBehaviour , IDamageable
         {
             transform.rotation = Quaternion.Euler(-90, 180, 0);
         }
-        if(myBD.velocity.x==0)
-        {
-            return;
-        }
+        //if(myBD.velocity.x==0)
+        //{
+        //    return;
+        //}
     }
     void StaminaCheck()
     {
