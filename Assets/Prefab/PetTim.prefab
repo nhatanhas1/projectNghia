@@ -70,6 +70,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260a3ba4dbd758541b58121bba7269d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHp: 0
+  maxHp: 0
+  moveSpeed: 0
+  dropItem: {fileID: 2405158238076439113, guid: 8f6c887714c9ba14aa578098b6291249, type: 3}
   target: {fileID: 0}
   range: 5
   isTargeted: 0

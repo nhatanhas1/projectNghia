@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour ,IDamageable
 {
+    public bool isDead;
+    public float currentHp;
+    public float maxHp;   
+    public float moveSpeed;
+
+    [SerializeField] GameObject dropItem;
+
     public Transform target;
     NavMeshAgent navMeshAgent;
     public float range = 10.0f;
@@ -20,7 +27,7 @@ public class EnemyController : MonoBehaviour
         tim,
         red,
         pink,
-    }
+    }   
 
     [SerializeField] EnemyStyle enemyStyle;
 
@@ -41,6 +48,10 @@ public class EnemyController : MonoBehaviour
     }
     void Start()
     {
+        isDead = false;
+        maxHp = 20;
+        currentHp = maxHp;
+
         timState = Random.Range(0, 2);
         StartCoroutine(UpdatePath());
         enemyState = State.Roaming;
@@ -204,5 +215,29 @@ public class EnemyController : MonoBehaviour
         //    Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
         //}
 
+    }
+
+    public void TakeDamage(float damage)
+    {        
+        if (isDead) { return; }
+        Debug.Log("Enemy Take Daamage");
+        currentHp -= damage;
+        if(currentHp <= 0)
+        {
+            
+            Dead();
+        }
+        
+    }
+
+    void Dead()
+    {
+        isDead = true;
+        GameObject dropitem =  Instantiate(dropItem,transform.position, Quaternion.Euler(90, 0, 0));
+        ItemController itemController = dropitem.GetComponent<ItemController>();
+        int tmp = Random.Range(0, itemController.itemDatas.Count - 1);
+        itemController.itemData = itemController.itemDatas[tmp];
+        itemController.SetUp();
+        Destroy(gameObject);
     }
 }
