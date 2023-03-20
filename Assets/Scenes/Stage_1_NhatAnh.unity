@@ -812,6 +812,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6645288458456748021, guid: 196625a76214add4b915681fbd50bf38, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6645288459749229116, guid: 196625a76214add4b915681fbd50bf38, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -858,7 +862,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6645288459749229119, guid: 196625a76214add4b915681fbd50bf38, type: 3}
       propertyPath: m_Name
-      value: GameObject
+      value: AllHitBoxGameObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645288459813657001, guid: 196625a76214add4b915681fbd50bf38, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645288459923488470, guid: 196625a76214add4b915681fbd50bf38, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 59.68807
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645288459923488470, guid: 196625a76214add4b915681fbd50bf38, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 16.8165
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 196625a76214add4b915681fbd50bf38, type: 3}
