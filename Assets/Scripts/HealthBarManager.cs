@@ -11,6 +11,11 @@ public class HealthBarManager : MonoBehaviour
     public float healthAmount;
     public Image staminaBar;
     public float staminaAmount;
+
+    private void Awake()
+    {
+        neko = FindAnyObjectByType<Neko2>();
+    }
     void Start()
     {
        

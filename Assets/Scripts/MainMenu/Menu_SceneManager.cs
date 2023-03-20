@@ -13,7 +13,8 @@ public class Menu_SceneManager : MonoBehaviour
     }
     public void GameStart()
     {
-        SceneManager.LoadScene("Stage_1");        
+        //SceneManager.LoadScene("Stage_1");
+        SceneManager.LoadScene(1);
     }
     public void Quit()
     {

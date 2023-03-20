@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour ,IDamageable
 {
     public bool isDead;
-    public int currentHp;
-    public int maxHp;   
+    public float currentHp;
+    public float maxHp;   
     public float moveSpeed;
 
     [SerializeField] GameObject dropItem;
@@ -217,7 +217,7 @@ public class EnemyController : MonoBehaviour ,IDamageable
 
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {        
         if (isDead) { return; }
         Debug.Log("Enemy Take Daamage");
@@ -233,7 +233,8 @@ public class EnemyController : MonoBehaviour ,IDamageable
     void Dead()
     {
         isDead = true;
-        Instantiate(dropItem,transform.position, Quaternion.Euler(90, 0, 0));
+        GameObject dropitem =  Instantiate(dropItem,transform.position, Quaternion.Euler(90, 0, 0));
+        //dropitem.GetComponent<ItemController>().
         Destroy(gameObject);
     }
 }
