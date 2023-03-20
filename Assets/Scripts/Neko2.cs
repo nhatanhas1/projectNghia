@@ -44,13 +44,21 @@ public class Neko2 : MonoBehaviour , IDamageable
     [SerializeField] Vector3 moveDir;
 
     private Vector3 moveDirection;
+
+    private void Awake()
+    {
+        myBD = GetComponent<Rigidbody>();
+        hp = maxHP; stamina = maxStamina;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+    }
     void Start()
     {
         moveSpeed = 10;
-        myBD= GetComponent<Rigidbody>();  
-        hp=maxHP; stamina=maxStamina;
-        spriteRenderer=GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        //myBD= GetComponent<Rigidbody>();  
+        //hp=maxHP; stamina=maxStamina;
+        //spriteRenderer=GetComponent<SpriteRenderer>();
+        //animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame

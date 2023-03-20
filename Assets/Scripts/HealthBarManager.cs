@@ -24,9 +24,13 @@ public class HealthBarManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        healthAmount = neko.hp;
-        staminaAmount = neko.stamina;
-        healthBar.fillAmount= healthAmount/100f;
-        staminaBar.fillAmount = staminaAmount / 100f;
+        if (neko != null)
+        {
+            healthAmount = neko.hp;
+            staminaAmount = neko.stamina;
+            healthBar.fillAmount = healthAmount / 100f;
+            staminaBar.fillAmount = staminaAmount / 100f;
+        }
+        
     }
 }
