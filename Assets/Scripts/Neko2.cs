@@ -53,6 +53,7 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     private void Awake()
     {
+        tempSpeed = moveSpeed;
         myBD = GetComponent<Rigidbody>();
         hp = maxHP; stamina = maxStamina;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -61,7 +62,7 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     void Start()
     {
-        moveSpeed = 10;
+      
         //myBD= GetComponent<Rigidbody>();  
         //hp=maxHP; stamina=maxStamina;
         //spriteRenderer=GetComponent<SpriteRenderer>();
@@ -77,6 +78,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         NekoDead();
         HealthConsume();
         StaminaCheck();
+        
     }
     private void FixedUpdate()
     {
@@ -108,7 +110,7 @@ public class Neko2 : MonoBehaviour , IDamageable
     {
         if (isDead == false)
         {
-            myBD.velocity = new Vector3(moveDirection.x * tempSpeed, 0, moveDirection.y * tempSpeed);
+          //  myBD.velocity = new Vector3(moveDirection.x * tempSpeed, 0, moveDirection.y * tempSpeed);
             myBD.velocity = moveDirection * tempSpeed;
             //Debug.Log(myBD.velocity);
 
@@ -178,15 +180,23 @@ public class Neko2 : MonoBehaviour , IDamageable
     //}
     void Run()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (!animator.GetBool("IsAttack"))
         {
-            tempSpeed = runSpeed;
-            //Debug.Log("Running");
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                tempSpeed = runSpeed;
+
+                //Debug.Log("Running");
+            }
+            else
+            {
+                tempSpeed = moveSpeed;
+
+
+            }
+
         }
-        else
-        {
-            tempSpeed = moveSpeed;
-        }
+        
     }
     void HealthConsume()
     {
@@ -206,11 +216,22 @@ public class Neko2 : MonoBehaviour , IDamageable
         if (Input.GetKeyDown(KeyCode.Space))
         {
             attackRadius.AttackInRadius();
+            animator.SetBool("IsAttack", true);
+            tempSpeed = 0;
+            //ChangeAnimationState(NEKO_ATTACK);
             //Debug.Log("Get Key downd");
         }
         
-    }
+    }  
+    public void EndAT() // event trong anim.clip
+    {
+        Debug.Log("EndAT");
 
+        animator.SetBool("IsAttack", false);
+        ChangeAnimationState(NEKO_ATTACK);
+        tempSpeed = moveSpeed;
+        
+    }
     public void TakeDamage(float damage)
     {
         //Debug.Log("Player Take Damage");

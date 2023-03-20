@@ -16,10 +16,10 @@ public class GameOver : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene("Gameplay_1");
+        SceneManager.LoadScene(1);
     }
     public void MainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(0);
     }
 }
