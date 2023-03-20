@@ -1,18 +1,41 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Neko2 : MonoBehaviour , IDamageable
 {
     [SerializeField] PlayerAttack attackRadius;
 
     public int tempSpeed;
-    public int moveSpeed; 
+    public int moveSpeed;
     public int runSpeed;
     public float hp;
     public float stamina;
     public float maxHP;
     public float maxStamina;
+    public bool isStaminaLow = false;
+
+    public float timeBtwAttack;
+    public float startTimeBtwAttack;
+
+    Animator animator;
+    private string currentState;
+
+    bool isDead;
+    bool isAttackPressed;
+    bool isAttacking = false;
+    public Transform attackPos;
+    public float attackRange;
+    public LayerMask enemiesLayer;
+    public int damage;
+
+    //Animation State
+    const string NEKO_IDLE = "idle";
+    const string NEKO_WALK = "walk";
+    const string NEKO_RUN = "run";
+    const string NEKO_ATTACK = "attack";
+    const string NEKO_DEAD = "dead";
 
     private SpriteRenderer spriteRenderer;
 
@@ -27,6 +50,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         myBD= GetComponent<Rigidbody>();  
         hp=maxHP; stamina=maxStamina;
         spriteRenderer=GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -34,13 +58,25 @@ public class Neko2 : MonoBehaviour , IDamageable
     {
         CheckInput();
         Attack();
+        CheckRotation();
+        NekoDead();
+        HealthConsume();
+        StaminaCheck();
     }
     private void FixedUpdate()
     {
         //Move();
-        Run();
-        HealthConsume();
         Movement();
+        if (isStaminaLow == false)
+        {
+            Run();
+        }
+        else if (isStaminaLow)
+        {
+            tempSpeed= moveSpeed;
+        }
+        
+        
         
     }
     void CheckInput()
@@ -55,29 +91,56 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     void Movement()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        if (isDead == false)
         {
-            moveDir.x = Input.GetAxisRaw("Horizontal");
-            moveDir.z = Input.GetAxisRaw("Vertical");
+            myBD.velocity = new Vector3(moveDirection.x * tempSpeed, 0, moveDirection.y * tempSpeed);
+            myBD.velocity = moveDirection * tempSpeed;
+            Debug.Log(myBD.velocity);
 
-            myBD.velocity = moveDir * moveSpeed;
-        }
-        else
-        {
-            moveDir = Vector3.zero;
-            myBD.velocity = moveDir;
-        }
-        if (myBD.velocity.x < 0)
-        {
+            //if(Input.anyKeyDown==false)
+            //{
+            //    moveDir = Vector3.zero;
+            //    myBD.velocity = moveDir;
 
-            this.transform.rotation = Quaternion.Euler(-90, 180, 0);
-            // anim.Play("Walk");
-        }
-        else if (myBD.velocity.x > 0)
-        {
+            //}
+            if (myBD.velocity.x < 0 && myBD.velocity.x >= -moveSpeed)
+            {
+                ChangeAnimationState(NEKO_WALK);
+                //this.transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+            else if (myBD.velocity.x > 0 && myBD.velocity.x <= moveSpeed)
+            {
+                ChangeAnimationState(NEKO_WALK);
+                //this.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            if (myBD.velocity.z > 0 && myBD.velocity.z <= moveSpeed)
+            {
+                ChangeAnimationState(NEKO_WALK);
+            }
+            if (myBD.velocity.z < 0 && myBD.velocity.z >= -moveSpeed)
+            {
+                ChangeAnimationState(NEKO_WALK);
+            }
+            else if (myBD.velocity.x == 0 && myBD.velocity.z == 0)
+            {
+                ChangeAnimationState(NEKO_IDLE);
+            }
+            if (myBD.velocity.x > moveSpeed || myBD.velocity.x < -moveSpeed || myBD.velocity.z > moveSpeed || myBD.velocity.z < -moveSpeed)
+            {
+                ChangeAnimationState(NEKO_RUN);
+            }
+            if (myBD.velocity.x < 0 && myBD.velocity.x >= -moveSpeed)
+            {
 
-            this.transform.rotation = Quaternion.Euler(90, 0, 0);
-            //   anim.Play("Walk");
+                // this.transform.rotation = Quaternion.Euler(-90, 180, 0);
+                // anim.Play("Walk");
+            }
+            else if (myBD.velocity.x > 0 && myBD.velocity.x <= moveSpeed)
+            {
+
+                //  this.transform.rotation = Quaternion.Euler(90, 0, 0);
+                //   anim.Play("Walk");
+            }
         }
     }
 
@@ -114,9 +177,9 @@ public class Neko2 : MonoBehaviour , IDamageable
     {
         if (hp >= 0)
         {
-            hp -= 0.05f;
+            hp -= 4f * Time.deltaTime;
         }
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
             hp += 5;
             hp = Mathf.Clamp(hp, 0, maxHP);
@@ -138,4 +201,56 @@ public class Neko2 : MonoBehaviour , IDamageable
         Debug.Log("Player Take Damage");
     }
 
+    void ChangeAnimationState(string newState)
+    {
+        if (currentState == newState) return;//tránh Animation tự phá chính nó
+        animator.Play(newState);
+        currentState = newState;//thay newState vào 
+    }
+
+    void CheckRotation()
+    {
+        if (myBD.velocity.x > 0)
+        {
+            transform.rotation = Quaternion.Euler(90, 0, 0);
+        }
+        if (myBD.velocity.x < 0)
+        {
+            transform.rotation = Quaternion.Euler(-90, 180, 0);
+        }
+        if(myBD.velocity.x==0)
+        {
+            return;
+        }
+    }
+    void StaminaCheck()
+    {
+        if (currentState == NEKO_WALK || currentState == NEKO_IDLE)
+        {
+            stamina += 20 * Time.deltaTime;
+            stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        }
+        if (currentState == NEKO_RUN)
+        {
+            stamina -= 40 * Time.deltaTime;
+            stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        }
+        if (stamina <= 10)
+        {
+            isStaminaLow = true;
+        }
+        else if (stamina >= 30)
+        {
+            isStaminaLow = false;
+        }
+    }
+    void NekoDead()
+    {
+        if (hp <= 0)
+        {
+            myBD.constraints = RigidbodyConstraints.FreezePosition;
+            isDead = true;
+            ChangeAnimationState(NEKO_DEAD);
+        }
+    }
 }
