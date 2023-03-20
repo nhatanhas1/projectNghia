@@ -19,7 +19,7 @@ public class Neko2 : MonoBehaviour , IDamageable
     public float timeBtwAttack;
     public float startTimeBtwAttack;
 
-    Animator animator;
+    [SerializeField] Animator animator;
     private string currentState;
 
     bool isDead;
