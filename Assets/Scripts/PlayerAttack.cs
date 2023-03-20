@@ -6,7 +6,14 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] List<GameObject> targetList;
+    [SerializeField] List<GameObject> consumeItemList;
 
+    [SerializeField] Neko2 player;
+
+    private void Awake()
+    {
+        player = GetComponentInParent<Neko2>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -28,17 +35,33 @@ public class PlayerAttack : MonoBehaviour
             Debug.Log("Have enemy in attack range");
             targetList.Add(other.gameObject);
             //other.GetComponent<IDamageable>().TakeDamage(5);
-        }        
+        }
+
+        if(other.GetComponent<ItemController>() != null)
+        {
+            Debug.Log("Have Item in attack range");
+            consumeItemList.Add(other.gameObject);
+        }
+        
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        targetList.Remove(other.gameObject);
+        if(other.GetComponent<IDamageable>() != null)
+        {
+            targetList.Remove(other.gameObject);
+        }
+        if (other.GetComponent<ItemController>() != null)
+        {
+            consumeItemList.Remove(other.gameObject);
+        }
     }
 
     public void AttackInRadius()
     {
         StartCoroutine(AttackAllTager());
+        StartCoroutine(ConsumeItem());
     }
 
 
@@ -50,9 +73,21 @@ public class PlayerAttack : MonoBehaviour
             {
                 Debug.Log("atattack  " + target.name);
                 target.GetComponent<IDamageable>().TakeDamage(5);
-            }
-            
+            }            
         }
         yield return new WaitForSecondsRealtime(1);        
+    }
+
+    IEnumerator ConsumeItem()
+    {
+        foreach (GameObject item in consumeItemList)
+        {
+            if (!item.IsDestroyed())
+            {
+                Debug.Log("eat Item  " + item.name);
+                item.GetComponent<ItemController>().EatItem(player);
+            }
+        }
+        yield return null;
     }
 }

@@ -22,6 +22,7 @@ public class Neko2 : MonoBehaviour , IDamageable
     public int score;
 
     Animator animator;
+
     private string currentState;
 
     bool isDead;
@@ -47,14 +48,24 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     private Vector3 moveDirection;
 
+
     public GameOver gameOver;
+
+    private void Awake()
+    {
+        myBD = GetComponent<Rigidbody>();
+        hp = maxHP; stamina = maxStamina;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+    }
+
     void Start()
     {
         moveSpeed = 10;
-        myBD= GetComponent<Rigidbody>();  
-        hp=maxHP; stamina=maxStamina;
-        spriteRenderer=GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        //myBD= GetComponent<Rigidbody>();  
+        //hp=maxHP; stamina=maxStamina;
+        //spriteRenderer=GetComponent<SpriteRenderer>();
+        //animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -99,7 +110,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         {
             myBD.velocity = new Vector3(moveDirection.x * tempSpeed, 0, moveDirection.y * tempSpeed);
             myBD.velocity = moveDirection * tempSpeed;
-            Debug.Log(myBD.velocity);
+            //Debug.Log(myBD.velocity);
 
             //if(Input.anyKeyDown==false)
             //{
@@ -195,15 +206,22 @@ public class Neko2 : MonoBehaviour , IDamageable
         if (Input.GetKeyDown(KeyCode.Space))
         {
             attackRadius.AttackInRadius();
-            Debug.Log("Get Key downd");
+            //Debug.Log("Get Key downd");
         }
         
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        Debug.Log("Player Take Damage");
+        //Debug.Log("Player Take Damage");
     }
+
+
+    void ConsumeItem()
+    {
+
+    }
+
 
     void ChangeAnimationState(string newState)
     {
@@ -258,6 +276,7 @@ public class Neko2 : MonoBehaviour , IDamageable
             StartCoroutine(GameOver());
             
         }
+
     }
 
     IEnumerator  GameOver()

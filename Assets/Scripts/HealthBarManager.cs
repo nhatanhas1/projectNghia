@@ -11,6 +11,11 @@ public class HealthBarManager : MonoBehaviour
     public float healthAmount;
     public Image staminaBar;
     public float staminaAmount;
+
+    private void Awake()
+    {
+        neko = FindAnyObjectByType<Neko2>();
+    }
     void Start()
     {
        
@@ -19,9 +24,13 @@ public class HealthBarManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        healthAmount = neko.hp;
-        staminaAmount = neko.stamina;
-        healthBar.fillAmount= healthAmount/100f;
-        staminaBar.fillAmount = staminaAmount / 100f;
+        if (neko != null)
+        {
+            healthAmount = neko.hp;
+            staminaAmount = neko.stamina;
+            healthBar.fillAmount = healthAmount / 100f;
+            staminaBar.fillAmount = staminaAmount / 100f;
+        }
+        
     }
 }
