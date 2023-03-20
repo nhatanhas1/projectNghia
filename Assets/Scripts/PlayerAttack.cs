@@ -28,7 +28,9 @@ public class PlayerAttack : MonoBehaviour
             Debug.Log("Have enemy in attack range");
             targetList.Add(other.gameObject);
             //other.GetComponent<IDamageable>().TakeDamage(5);
-        }        
+        }
+        
+
     }
 
     private void OnTriggerExit(Collider other)

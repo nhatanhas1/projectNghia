@@ -133,7 +133,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         Debug.Log("Player Take Damage");
     }
