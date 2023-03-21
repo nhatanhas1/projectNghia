@@ -5,10 +5,16 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour ,IDamageable
 {
+    [SerializeField] GameObject dropBoomItem; //Drop boom
+
     public bool isDead;
     public float currentHp;
     public float maxHp;   
     public float moveSpeed;
+    [SerializeField] float attackDamage;
+    [SerializeField] float attackDelay;
+    float nextAttack;
+    [SerializeField] bool enemyCanAttack;
 
     [SerializeField] GameObject dropItem;
 
@@ -51,6 +57,10 @@ public class EnemyController : MonoBehaviour ,IDamageable
         isDead = false;
         maxHp = 20;
         currentHp = maxHp;
+        attackDamage = 20;
+        nextAttack = 0;
+        attackDelay = 2;
+        
 
         timState = Random.Range(0, 2);
         StartCoroutine(UpdatePath());
@@ -80,21 +90,25 @@ public class EnemyController : MonoBehaviour ,IDamageable
                     switch (enemyStyle)
                     {
                         case EnemyStyle.red:
+                            enemyCanAttack = true;
                             enemyState = State.ChaseTarget;
                             //Debug.Log("DO");
                             break;
                         case EnemyStyle.pink:
+                            enemyCanAttack = false;
                             enemyState = State.Runaway;
                             break;
                         case EnemyStyle.tim:
                             //Debug.Log("Tim");
                             if (timState > 0)
                             {
+                                enemyCanAttack = true;
                                 enemyState = State.ChaseTarget;
                                 //Debug.Log("Tim tan cong" + timState);
                             }
                             else
                             {
+                                enemyCanAttack = false;
                                 //Debug.Log("Tim Bo chay" + timState);
                                 enemyState = State.Runaway;
                             }
@@ -220,7 +234,7 @@ public class EnemyController : MonoBehaviour ,IDamageable
     public void TakeDamage(float damage)
     {        
         if (isDead) { return; }
-        Debug.Log("Enemy Take Daamage");
+        //Debug.Log("Enemy Take Daamage");
         currentHp -= damage;
         if(currentHp <= 0)
         {
@@ -233,11 +247,53 @@ public class EnemyController : MonoBehaviour ,IDamageable
     void Dead()
     {
         isDead = true;
-        GameObject dropitem =  Instantiate(dropItem,transform.position, Quaternion.Euler(90, 0, 0));
-        ItemController itemController = dropitem.GetComponent<ItemController>();
-        int tmp = Random.Range(0, itemController.itemDatas.Count - 1);
-        itemController.itemData = itemController.itemDatas[tmp];
-        itemController.SetUp();
+        int tmp2 = Random.Range(0, 10);
+        if(tmp2 >= 8) 
+        {
+            Debug.Log(tmp2);
+            Instantiate(dropBoomItem, transform.position, Quaternion.Euler(90, 0, 0));
+        }
+        else
+        {
+            GameObject dropitem = Instantiate(dropItem, transform.position, Quaternion.Euler(90, 0, 0));
+            ItemController itemController = dropitem.GetComponent<ItemController>();
+            int tmp = Random.Range(0, itemController.itemDatas.Count - 1);
+            itemController.itemData = itemController.itemDatas[tmp];
+            itemController.SetUp();
+        }
+        
         Destroy(gameObject);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //if(other.GetComponent<Neko2>() != null)
+        //{
+        //    other.GetComponent<Neko2>().TakeDamage(attackDamage);
+
+        //}
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.GetComponent<Neko2>() != null)
+        {            
+            Attack(other.GetComponent<Neko2>());
+        }
+    }
+
+    void Attack(Neko2 player)
+    {
+        if(nextAttack < Time.time)
+        {
+            nextAttack = Time.time + attackDelay;
+            if (enemyCanAttack)
+            {
+                player.TakeDamage(attackDamage);
+            }
+            
+        }
+    }
+
+
 }

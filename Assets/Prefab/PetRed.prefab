@@ -249,10 +249,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260a3ba4dbd758541b58121bba7269d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropBoomItem: {fileID: 4680485786411700483, guid: 3cb350afd62782a419cb7586b18982e5, type: 3}
   isDead: 0
   currentHp: 0
   maxHp: 0
   moveSpeed: 0
+  attackDamage: 0
+  attackDelay: 0
+  enemyCanAttack: 0
   dropItem: {fileID: 2405158238076439113, guid: 8f6c887714c9ba14aa578098b6291249, type: 3}
   target: {fileID: 0}
   range: 5

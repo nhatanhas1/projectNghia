@@ -22,7 +22,7 @@ public class TriggerEnemy : MonoBehaviour
     {
        if( other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
        {
-            Debug.Log("trigger Enemy");
+            //Debug.Log("trigger Enemy");
             if(other.GetComponent<EnemyController>() != null)
             {
                 other.GetComponent<EnemyController>().isTargeted = true;
@@ -35,7 +35,7 @@ public class TriggerEnemy : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Debug.Log("bo trigger Enemy");
+            //Debug.Log("bo trigger Enemy");
             if (other.GetComponent<EnemyController>() != null)
             {
                 other.GetComponent<EnemyController>().isTargeted = false;

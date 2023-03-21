@@ -62,7 +62,7 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     void Start()
     {
-      
+        isDead = false;
         //myBD= GetComponent<Rigidbody>();  
         //hp=maxHP; stamina=maxStamina;
         //spriteRenderer=GetComponent<SpriteRenderer>();
@@ -75,7 +75,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         CheckInput();
         Attack();
         CheckRotation();
-        NekoDead();
+        //NekoDead();
         HealthConsume();
         StaminaCheck();
         
@@ -191,10 +191,7 @@ public class Neko2 : MonoBehaviour , IDamageable
             else
             {
                 tempSpeed = moveSpeed;
-
-
             }
-
         }
         
     }
@@ -203,6 +200,10 @@ public class Neko2 : MonoBehaviour , IDamageable
         if (hp >= 0)
         {
             hp -= 4f * Time.deltaTime;
+        }
+        else
+        {
+            NekoDead();
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
@@ -216,7 +217,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         if (Input.GetKeyDown(KeyCode.Space))
         {
             attackRadius.AttackInRadius();
-            animator.SetBool("IsAttack", true);
+            //animator.SetBool("IsAttack", true);
             tempSpeed = 0;
             //ChangeAnimationState(NEKO_ATTACK);
             //Debug.Log("Get Key downd");
@@ -227,22 +228,28 @@ public class Neko2 : MonoBehaviour , IDamageable
     {
         Debug.Log("EndAT");
 
-        animator.SetBool("IsAttack", false);
+        //animator.SetBool("IsAttack", false);
         ChangeAnimationState(NEKO_ATTACK);
         tempSpeed = moveSpeed;
         
     }
     public void TakeDamage(float damage)
     {
-        //Debug.Log("Player Take Damage");
+        if (isDead) { return; } 
+        Debug.Log("Player Take Damage");
+        
+        hp -= damage ;
+        if (hp <= 0)
+        {
+            NekoDead();
+        }
+
     }
 
+    //void ConsumeItem()
+    //{
 
-    void ConsumeItem()
-    {
-
-    }
-
+    //}
 
     void ChangeAnimationState(string newState)
     {
@@ -289,14 +296,19 @@ public class Neko2 : MonoBehaviour , IDamageable
     }
     void NekoDead()
     {
-        if (hp <= 0)
-        {
-            myBD.constraints = RigidbodyConstraints.FreezePosition;
-            isDead = true;
-            ChangeAnimationState(NEKO_DEAD);
-            StartCoroutine(GameOver());
-            
-        }
+        //if (hp <= 0)
+        //{
+        //    myBD.constraints = RigidbodyConstraints.FreezePosition;
+        //    isDead = true;
+        //    ChangeAnimationState(NEKO_DEAD);
+        //    StartCoroutine(GameOver());
+
+        //}
+        if (isDead) { return; }
+        isDead = true;
+        myBD.constraints = RigidbodyConstraints.FreezePosition;        
+        ChangeAnimationState(NEKO_DEAD);
+        StartCoroutine(GameOver());
 
     }
 
