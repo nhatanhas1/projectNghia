@@ -6,14 +6,14 @@ public class ItemController : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public List<ItemData> itemDatas = new List<ItemData>();
+    public List<ItemData> itemDatas;
     public ItemData itemData;
     float healPoint;
     [SerializeField] SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     void Start()
