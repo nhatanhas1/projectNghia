@@ -237,8 +237,7 @@ public class EnemyController : MonoBehaviour ,IDamageable
         //Debug.Log("Enemy Take Daamage");
         currentHp -= damage;
         if(currentHp <= 0)
-        {
-            
+        {            
             Dead();
         }
         
@@ -246,6 +245,7 @@ public class EnemyController : MonoBehaviour ,IDamageable
 
     void Dead()
     {
+        if(isDead) { return; }
         isDead = true;
         int tmp2 = Random.Range(0, 10);
         if(tmp2 >= 8) 
