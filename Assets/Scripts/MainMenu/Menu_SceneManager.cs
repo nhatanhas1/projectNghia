@@ -11,10 +11,10 @@ public class Menu_SceneManager : MonoBehaviour
     private void Start()
     {
        // aud = GetComponent<AudioSource>();
+        Time.timeScale = 1.0f;
         aud.Stop();
         StartCoroutine(WaitAbit());
-        
-        
+                
     }
     public void GameStart()
     {
