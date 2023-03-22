@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -19,15 +20,15 @@ public class Neko2 : MonoBehaviour , IDamageable
     public float timeBtwAttack;
     public float startTimeBtwAttack;
 
+    public int tempScore;
     public int score;
-
     Animator animator;
 
     private string currentState;
 
     bool isDead;
     bool isAttackPressed;
-    bool isAttacking = false;
+   public bool isAttacking;
     public Transform attackPos;
     public float attackRange;
     public LayerMask enemiesLayer;
@@ -58,6 +59,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         hp = maxHP; stamina = maxStamina;
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        isAttacking = animator.GetBool("IsAttack");
     }
 
     void Start()
@@ -77,8 +79,8 @@ public class Neko2 : MonoBehaviour , IDamageable
         CheckRotation();
         //NekoDead();
         HealthConsume();
-        StaminaCheck();
-        
+        StaminaCheck();     
+
     }
     private void FixedUpdate()
     {
@@ -92,9 +94,14 @@ public class Neko2 : MonoBehaviour , IDamageable
         {
             tempSpeed= moveSpeed;
         }
-        
-        
-        
+        if(isDead== false) { ScoreUp(); }
+
+       
+    }
+
+    private void LateUpdate()
+    {
+    
     }
     void CheckInput()
     {
@@ -107,56 +114,61 @@ public class Neko2 : MonoBehaviour , IDamageable
     }
 
     void Movement()
-    {
-        if (isDead == false)
+    {  
         {
-          //  myBD.velocity = new Vector3(moveDirection.x * tempSpeed, 0, moveDirection.y * tempSpeed);
-            myBD.velocity = moveDirection * tempSpeed;
-            //Debug.Log(myBD.velocity);
+            if(isAttacking==false) {
 
-            //if(Input.anyKeyDown==false)
-            //{
-            //    moveDir = Vector3.zero;
-            //    myBD.velocity = moveDir;
+                if (isDead == false)
+                {
+                    //  myBD.velocity = new Vector3(moveDirection.x * tempSpeed, 0, moveDirection.y * tempSpeed);
+                    myBD.velocity = moveDirection * tempSpeed;
+                    //Debug.Log(myBD.velocity);
 
-            //}
-            if (myBD.velocity.x < 0 && myBD.velocity.x >= -moveSpeed)
-            {
-                ChangeAnimationState(NEKO_WALK);
-                //this.transform.rotation = Quaternion.Euler(0, 180, 0);
-            }
-            else if (myBD.velocity.x > 0 && myBD.velocity.x <= moveSpeed)
-            {
-                ChangeAnimationState(NEKO_WALK);
-                //this.transform.rotation = Quaternion.Euler(0, 0, 0);
-            }
-            if (myBD.velocity.z > 0 && myBD.velocity.z <= moveSpeed)
-            {
-                ChangeAnimationState(NEKO_WALK);
-            }
-            if (myBD.velocity.z < 0 && myBD.velocity.z >= -moveSpeed)
-            {
-                ChangeAnimationState(NEKO_WALK);
-            }
-            else if (myBD.velocity.x == 0 && myBD.velocity.z == 0)
-            {
-                ChangeAnimationState(NEKO_IDLE);
-            }
-            if (myBD.velocity.x > moveSpeed || myBD.velocity.x < -moveSpeed || myBD.velocity.z > moveSpeed || myBD.velocity.z < -moveSpeed)
-            {
-                ChangeAnimationState(NEKO_RUN);
-            }
-            if (myBD.velocity.x < 0 && myBD.velocity.x >= -moveSpeed)
-            {
+                    //if(Input.anyKeyDown==false)
+                    //{
+                    //    moveDir = Vector3.zero;
+                    //    myBD.velocity = moveDir;
 
-                // this.transform.rotation = Quaternion.Euler(-90, 180, 0);
-                // anim.Play("Walk");
-            }
-            else if (myBD.velocity.x > 0 && myBD.velocity.x <= moveSpeed)
-            {
+                    //}
+                    if (myBD.velocity.x < 0 && myBD.velocity.x >= -moveSpeed)
+                    {
+                        ChangeAnimationState(NEKO_WALK);
+                        //this.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    }
+                    else if (myBD.velocity.x > 0 && myBD.velocity.x <= moveSpeed)
+                    {
+                        ChangeAnimationState(NEKO_WALK);
+                        //this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    if (myBD.velocity.z > 0 && myBD.velocity.z <= moveSpeed)
+                    {
+                        ChangeAnimationState(NEKO_WALK);
+                    }
+                    if (myBD.velocity.z < 0 && myBD.velocity.z >= -moveSpeed)
+                    {
+                        ChangeAnimationState(NEKO_WALK);
+                    }
+                    else if (myBD.velocity.x == 0 && myBD.velocity.z == 0)
+                    {
+                        ChangeAnimationState(NEKO_IDLE);
+                    }
+                    if (myBD.velocity.x > moveSpeed || myBD.velocity.x < -moveSpeed || myBD.velocity.z > moveSpeed || myBD.velocity.z < -moveSpeed)
+                    {
+                        ChangeAnimationState(NEKO_RUN);
+                    }
+                    if (myBD.velocity.x < 0 && myBD.velocity.x >= -moveSpeed)
+                    {
 
-                //  this.transform.rotation = Quaternion.Euler(90, 0, 0);
-                //   anim.Play("Walk");
+                        // this.transform.rotation = Quaternion.Euler(-90, 180, 0);
+                        // anim.Play("Walk");
+                    }
+                    else if (myBD.velocity.x > 0 && myBD.velocity.x <= moveSpeed)
+                    {
+
+                        //  this.transform.rotation = Quaternion.Euler(90, 0, 0);
+                        //   anim.Play("Walk");
+                    }
+                }
             }
         }
     }
@@ -199,7 +211,7 @@ public class Neko2 : MonoBehaviour , IDamageable
     {
         if (hp >= 0)
         {
-            hp -= 4f * Time.deltaTime;
+            hp -= 2.5f * Time.deltaTime;
         }
         else
         {
@@ -214,23 +226,29 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!isStaminaLow)
         {
-            attackRadius.AttackInRadius();
-            //animator.SetBool("IsAttack", true);
-            tempSpeed = 0;
-            //ChangeAnimationState(NEKO_ATTACK);
-            //Debug.Log("Get Key downd");
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                attackRadius.AttackInRadius();
+                animator.SetBool("IsAttack", true);
+                tempSpeed = 0;
+              
+                //ChangeAnimationState(NEKO_ATTACK);
+                //Debug.Log("Get Key downd");
+            }
         }
         
     }  
+  
     public void EndAT() // event trong anim.clip
     {
         Debug.Log("EndAT");
 
-        //animator.SetBool("IsAttack", false);
-        ChangeAnimationState(NEKO_ATTACK);
+        animator.SetBool("IsAttack", false);
+     // ChangeAnimationState(NEKO_ATTACK);
         tempSpeed = moveSpeed;
+        ChangeAnimationState(NEKO_IDLE);
         
     }
     public void TakeDamage(float damage)
@@ -289,7 +307,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         {
             isStaminaLow = true;
         }
-        else if (stamina >= 30)
+        else if (stamina >= 50)
         {
             isStaminaLow = false;
         }
@@ -303,8 +321,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         //    ChangeAnimationState(NEKO_DEAD);
         //    StartCoroutine(GameOver());
 
-        //}
-        if (isDead) { return; }
+        //}       
         isDead = true;
         myBD.constraints = RigidbodyConstraints.FreezePosition;        
         ChangeAnimationState(NEKO_DEAD);
@@ -314,8 +331,18 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     IEnumerator  GameOver()
     {
+        
         yield return new WaitForSeconds(2.5f);
-        gameOver.Setup(score);
-      
+        gameOver.Setup(score);    
     }
+    void TempScoreUP()
+    {
+       tempScore = tempScore++ ;        
+    }
+    void ScoreUp()
+    {
+        score = score + 1;
+        if(isDead) { return; }  
+    }
+
 }

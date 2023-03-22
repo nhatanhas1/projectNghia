@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour
 {
     public TMP_Text pointText;
-    public void Setup(int score)
+    public void Setup(double score)
     {
         gameObject.SetActive(true);
         pointText.text = "Score : " +  score.ToString();
