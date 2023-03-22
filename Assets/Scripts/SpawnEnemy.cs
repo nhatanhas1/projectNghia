@@ -7,14 +7,14 @@ public class SpawnEnemy : MonoBehaviour
 
     public List<GameObject> enemyPrefab;
     public List<Transform> spwanPosition;
-    float spawnTime;
-    float spawnDelay;
+    [SerializeField] float spawnTime;
+    [SerializeField] float spawnDelay;
     int maxSpawn;
     int spawnCount;
     // Start is called before the first frame update
     void Start()
     {
-        spawnDelay = 2.5f;
+        spawnDelay = 1.5f;
         maxSpawn = 20;
     }
 
