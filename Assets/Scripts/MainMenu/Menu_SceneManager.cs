@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu_SceneManager : MonoBehaviour
 {
+  
     public AudioSource aud;
    // AudioClip bg;
     private void Start()
@@ -20,15 +21,17 @@ public class Menu_SceneManager : MonoBehaviour
     {
         //SceneManager.LoadScene("Stage_1");
         SceneManager.LoadScene(1);
+        
     }
     public void Quit()
     {
         Application.Quit();
+        PlayerPrefs.SetInt("highscore", 0);
     }
 
    IEnumerator WaitAbit()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         aud.Play();
     }
 }

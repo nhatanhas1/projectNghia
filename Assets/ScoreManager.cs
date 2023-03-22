@@ -11,19 +11,23 @@ public class ScoreManager : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text highScoreText;
 
-    int score = 0;
-    int highScore = 0;
+   public int score = 0;
+    public int highScore = 0;
 
     public static ScoreManager instance;    
     // Start is called before the first frame update
+    
     void Awake()
     {
         instance = this;  
     }
+
+  
     private void Start()
     {
-        highScore = PlayerPrefs.GetInt("highScore" ,highScore);  
+        
         highScoreText.text = "High Score :  " + highScore.ToString();
+        highScore = PlayerPrefs.GetInt("highScore", highScore);
     }
     // Update is called once per frame
     void Update()

@@ -6,6 +6,9 @@ using UnityEngine.Rendering.Universal;
 
 public class Neko2 : MonoBehaviour , IDamageable
 {
+
+  
+
     [SerializeField] PlayerAttack attackRadius;
 
     public int tempSpeed;
@@ -252,7 +255,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         animator.SetBool("IsAttack", false);
      // ChangeAnimationState(NEKO_ATTACK);
         tempSpeed = moveSpeed;
-        ChangeAnimationState(NEKO_IDLE);
+        //ChangeAnimationState(NEKO_IDLE);
         
     }
     public void TakeDamage(float damage)
