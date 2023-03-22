@@ -219,8 +219,12 @@ public class Neko2 : MonoBehaviour , IDamageable
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            hp += 5;
+            hp += 100;
             hp = Mathf.Clamp(hp, 0, maxHP);
+        }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            hp -= 50;
         }
     }
 

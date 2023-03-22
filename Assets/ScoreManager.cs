@@ -22,7 +22,7 @@ public class ScoreManager : MonoBehaviour
     }
     private void Start()
     {
-        highScore = PlayerPrefs.GetInt("highscore", 0);  
+        highScore = PlayerPrefs.GetInt("highScore" ,highScore);  
         highScoreText.text = "High Score :  " + highScore.ToString();
     }
     // Update is called once per frame
@@ -34,6 +34,7 @@ public class ScoreManager : MonoBehaviour
         if (highScore < score)
         {
             PlayerPrefs.SetInt("highScore", score);
+            highScore = score;
         }
     }
 }

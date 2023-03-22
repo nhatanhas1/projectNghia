@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f726c97cf78908d4a9c5e0cee22cfc22, type: 3}
   m_Name: A
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 21300000, guid: 998b0ffea5a3b5846a14d963a43c21ef, type: 3}
+  itemSprite: {fileID: 21300000, guid: 73b4b1457b6586f4b9fcd05cc4cc302e, type: 3}
   itemStype: 0
   healPoint: 5
