@@ -10,7 +10,7 @@ public class Menu_SceneManager : MonoBehaviour
    // AudioClip bg;
     private void Start()
     {
-       // aud = GetComponent<AudioSource>();
+        // aud = GetComponent<AudioSource>();
         Time.timeScale = 1.0f;
         aud.Stop();
         StartCoroutine(WaitAbit());

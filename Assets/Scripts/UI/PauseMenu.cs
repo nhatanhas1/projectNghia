@@ -10,7 +10,7 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        Time.timeScale = 1.0f; 
+        Time.timeScale = 1.0f;
     }
     public void Pause()
     {
