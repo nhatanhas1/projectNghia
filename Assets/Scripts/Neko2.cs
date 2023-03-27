@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Cinemachine;
 
-public class Neko2 : MonoBehaviour , IDamageable
+public class Neko2 : MonoBehaviour, IDamageable
 {
 
-  
+
 
     [SerializeField] PlayerAttack attackRadius;
 
+    public GameObject deadSound;
+    public SFXPlay sfx;
+    public CameraShake _VCam;
     public int tempSpeed;
     public int moveSpeed;
     public int runSpeed;
@@ -25,13 +29,13 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     public int tempScore;
     public int score;
-    Animator animator;
+    public Animator animator;
 
     private string currentState;
 
     bool isDead;
     bool isAttackPressed;
-   public bool isAttacking;
+    public bool isAttacking;
     public Transform attackPos;
     public float attackRange;
     public LayerMask enemiesLayer;
@@ -47,7 +51,7 @@ public class Neko2 : MonoBehaviour , IDamageable
     private SpriteRenderer spriteRenderer;
 
     public Rigidbody myBD;
-    
+
     [SerializeField] Vector3 moveDir;
 
     private Vector3 moveDirection;
@@ -55,14 +59,18 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     public GameOver gameOver;
 
-    private void Awake()
-    {
+    private void Awake() {
+
+        sfx = FindAnyObjectByType<SFXPlay>();
+        _VCam = FindAnyObjectByType<CameraShake>();
+       
         tempSpeed = moveSpeed;
         myBD = GetComponent<Rigidbody>();
         hp = maxHP; stamina = maxStamina;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
         isAttacking = animator.GetBool("IsAttack");
+        startTimeBtwAttack = timeBtwAttack;
     }
 
     void Start()
@@ -82,12 +90,13 @@ public class Neko2 : MonoBehaviour , IDamageable
         CheckRotation();
         //NekoDead();
         HealthConsume();
-        StaminaCheck();     
+        StaminaCheck();
 
     }
     private void FixedUpdate()
     {
         //Move();
+        startTimeBtwAttack -= 1 * Time.deltaTime;
         Movement();
         if (isStaminaLow == false)
         {
@@ -95,31 +104,31 @@ public class Neko2 : MonoBehaviour , IDamageable
         }
         else if (isStaminaLow)
         {
-            tempSpeed= moveSpeed;
+            tempSpeed = moveSpeed;
         }
-        if(isDead== false) { ScoreUp(); }
+        if (isDead == false) { ScoreUp(); }
 
-       
+
     }
 
     private void LateUpdate()
     {
-    
+
     }
     void CheckInput()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
 
-        moveDirection = new Vector3(moveX,0, moveY).normalized;
+        moveDirection = new Vector3(moveX, 0, moveY).normalized;
 
         //Debug.Log("Input X la : " + moveX + " Input Y la" + moveY);
     }
 
     void Movement()
-    {  
+    {
         {
-            if(isAttacking==false) {
+            if (isAttacking == false) {
 
                 if (isDead == false)
                 {
@@ -188,7 +197,7 @@ public class Neko2 : MonoBehaviour , IDamageable
     //    }
     //    else if (myBD.velocity.x > 0)
     //    {
-       
+
     //        this.transform.rotation = Quaternion.Euler(90, 0, 0);
     //        //   anim.Play("Walk");
     //    }
@@ -208,7 +217,7 @@ public class Neko2 : MonoBehaviour , IDamageable
                 tempSpeed = moveSpeed;
             }
         }
-        
+
     }
     void HealthConsume()
     {
@@ -225,7 +234,7 @@ public class Neko2 : MonoBehaviour , IDamageable
             hp += 100;
             hp = Mathf.Clamp(hp, 0, maxHP);
         }
-        if(Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             hp -= 50;
         }
@@ -233,37 +242,44 @@ public class Neko2 : MonoBehaviour , IDamageable
 
     void Attack()
     {
-        if (!isStaminaLow)
+        if (!isStaminaLow && startTimeBtwAttack <= 0)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 attackRadius.AttackInRadius();
                 animator.SetBool("IsAttack", true);
                 tempSpeed = 0;
-              
+                startTimeBtwAttack = timeBtwAttack;
+                //_VCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 1;
+                _VCam.ShakeCamera();
                 //ChangeAnimationState(NEKO_ATTACK);
                 //Debug.Log("Get Key downd");
+                stamina -= 10;
+                sfx.PlaySlap();
             }
         }
-        
-    }  
-  
+
+    }
+
     public void EndAT() // event trong anim.clip
     {
         Debug.Log("EndAT");
 
         animator.SetBool("IsAttack", false);
-     // ChangeAnimationState(NEKO_ATTACK);
+        // ChangeAnimationState(NEKO_ATTACK);
         tempSpeed = moveSpeed;
+        // _VCam.StopShake();
+        // _VCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
         //ChangeAnimationState(NEKO_IDLE);
-        
+
     }
     public void TakeDamage(float damage)
     {
-        if (isDead) { return; } 
+        if (isDead) { return; }
         Debug.Log("Player Take Damage");
-        
-        hp -= damage ;
+
+        hp -= damage;
+        sfx.PlayHit();
         if (hp <= 0)
         {
             NekoDead();
@@ -293,7 +309,7 @@ public class Neko2 : MonoBehaviour , IDamageable
         {
             transform.rotation = Quaternion.Euler(-90, 180, 0);
         }
-        if(myBD.velocity.x==0)
+        if (myBD.velocity.x == 0)
         {
             return;
         }
@@ -310,11 +326,11 @@ public class Neko2 : MonoBehaviour , IDamageable
             stamina -= 40 * Time.deltaTime;
             stamina = Mathf.Clamp(stamina, 0, maxStamina);
         }
-        if (stamina <= 10)
+        if (stamina <= 1)
         {
             isStaminaLow = true;
         }
-        else if (stamina >= 50)
+        else if (stamina >= 30)
         {
             isStaminaLow = false;
         }
@@ -330,26 +346,23 @@ public class Neko2 : MonoBehaviour , IDamageable
 
         //}       
         isDead = true;
+        deadSound.SetActive(true);
         myBD.constraints = RigidbodyConstraints.FreezePosition;        
         ChangeAnimationState(NEKO_DEAD);
         StartCoroutine(GameOver());
-
-    }
-
-    IEnumerator  GameOver()
-    {
         
-        yield return new WaitForSeconds(2.5f);
-        gameOver.Setup(score);    
-    }
-    void TempScoreUP()
-    {
-       tempScore = tempScore++ ;        
+
     }
     void ScoreUp()
     {
         score = score + 1;
-        if(isDead) { return; }  
+        if (isDead) { return; }
     }
-
+    IEnumerator  GameOver()
+    {
+        
+        yield return new WaitForSeconds(2.5f);
+        gameOver.Setup(score);
+        
+    }
 }

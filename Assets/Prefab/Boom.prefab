@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69a1135ad6eb55f4ba8ed05d89ede50b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explodeParticle: {fileID: 5391730831840223265, guid: 344f4c6c9865e6648ab6389e70e4b484, type: 3}
   boomDamage: 20
   boomRadius: 2
   timeActive: 2

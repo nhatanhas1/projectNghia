@@ -5,7 +5,10 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour ,IDamageable
 {
+    public GameObject explodeParticle;
     [SerializeField] GameObject dropBoomItem; //Drop boom
+
+    public Neko2 neko2;
 
     public bool isDead;
     public float currentHp;
@@ -28,6 +31,9 @@ public class EnemyController : MonoBehaviour ,IDamageable
     bool switchState;
     int timState;
 
+    public Transform myPos;
+    public Rigidbody myBD;
+
     public enum EnemyStyle
     {
         tim,
@@ -49,13 +55,19 @@ public class EnemyController : MonoBehaviour ,IDamageable
     // Start is called before the first frame update
     private void Awake()
     {
+        neko2 = FindAnyObjectByType<Neko2>();
+     //   neko2 = GetComponent<Neko2>();  
+        
         navMeshAgent = GetComponent<NavMeshAgent>();
         target = FindObjectOfType<Neko2>().transform;
+        myBD= GetComponent<Rigidbody>();
+        myPos = this.gameObject.transform;
     }
     void Start()
     {
+        
         isDead = false;
-        maxHp = 20;
+        //maxHp = 10;
         currentHp = maxHp;
         attackDamage = 20;
         nextAttack = 0;
@@ -70,7 +82,8 @@ public class EnemyController : MonoBehaviour ,IDamageable
     // Update is called once per frame
     void Update()
     {
-        
+        // Debug.Log("this thing velocity = " + myBD.velocity);
+        CheckRotate();
     }
 
     IEnumerator UpdatePath()
@@ -232,7 +245,8 @@ public class EnemyController : MonoBehaviour ,IDamageable
     }
 
     public void TakeDamage(float damage)
-    {        
+    {
+        damage = neko2.damage;
         if (isDead) { return; }
         //Debug.Log("Enemy Take Daamage");
         currentHp -= damage;
@@ -261,7 +275,7 @@ public class EnemyController : MonoBehaviour ,IDamageable
             itemController.itemData = itemController.itemDatas[tmp];
             itemController.SetUp();
         }
-        
+        Instantiate(explodeParticle, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
@@ -294,6 +308,16 @@ public class EnemyController : MonoBehaviour ,IDamageable
             
         }
     }
-
+    void CheckRotate()
+    {
+        if(this.gameObject.transform.position.x > target.transform.position.x)
+        {
+            this.transform.localScale = new Vector3(1,1,1);
+        }
+        if (this.gameObject.transform.position.x < target.transform.position.x)
+        {
+            this.transform.localScale = new Vector3(-1, 1, 1);
+        }
+    }
 
 }

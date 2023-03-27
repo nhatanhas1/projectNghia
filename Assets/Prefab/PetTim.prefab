@@ -46,7 +46,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 0
@@ -70,10 +70,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260a3ba4dbd758541b58121bba7269d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explodeParticle: {fileID: 5391730831840223265, guid: 74d0e76d57c69e5448d699cbeb6214b5, type: 3}
   dropBoomItem: {fileID: 4680485786411700483, guid: 3cb350afd62782a419cb7586b18982e5, type: 3}
+  neko2: {fileID: 1246732431149258938, guid: 19b275584baf6ae4993b22fbc9377759, type: 3}
   isDead: 0
   currentHp: 0
-  maxHp: 0
+  maxHp: 10
   moveSpeed: 0
   attackDamage: 0
   attackDelay: 0
@@ -82,6 +84,8 @@ MonoBehaviour:
   target: {fileID: 0}
   range: 5
   isTargeted: 0
+  myPos: {fileID: 0}
+  myBD: {fileID: 0}
   enemyStyle: 0
   enemyState: 0
 --- !u!54 &1408283575208370634
@@ -167,7 +171,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

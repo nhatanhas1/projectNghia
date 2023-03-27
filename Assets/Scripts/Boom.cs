@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Boom : MonoBehaviour
 {
+    public GameObject explodeParticle;
     SphereCollider sphereCollider;
     [SerializeField] float boomDamage = 20;
     [SerializeField] float boomRadius = 2;
@@ -73,6 +74,7 @@ public class Boom : MonoBehaviour
             {
                 player.TakeDamage(boomDamage);
             }
+            Instantiate(explodeParticle,transform.position,Quaternion.identity);
             StartCoroutine(DestroyBoom());
         }
     }

@@ -36,7 +36,10 @@ public class ItemController : MonoBehaviour
     public void EatItem(Neko2 player)
     {
         player.hp += healPoint;
+            player.sfx.PlayEat();
+        player.hp = Mathf.Clamp(player.hp, 0, player.maxHP);
         Destroy(gameObject);
+       
     }
 
     private void OnTriggerEnter(Collider other)

@@ -14,7 +14,7 @@ public class SpawnEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnDelay = 1.5f;
+        //spawnDelay = 1f;
         maxSpawn = 20;
     }
 
