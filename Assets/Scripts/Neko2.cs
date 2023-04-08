@@ -31,7 +31,7 @@ public class Neko2 : MonoBehaviour, IDamageable
     public int score;
     public Animator animator;
 
-    private string currentState;
+    public string currentState;
 
     bool isDead;
     bool isAttackPressed;

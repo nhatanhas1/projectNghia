@@ -10,13 +10,16 @@ public class CameraShake : MonoBehaviour
     public float shakeTime;
     public float timer;
     private CinemachineBasicMultiChannelPerlin _multiChannelPerlin;
+    public Neko2 neko2;
     // Start is called before the first frame update
     void Awake()
     {
+        neko2 = FindObjectOfType<Neko2>();
        _VCam= GetComponent<CinemachineVirtualCamera>(); 
     }
     private void Start()
     {
+        _VCam.Follow = neko2.transform;
         StopShake();
     }
     public void ShakeCamera()

@@ -187,7 +187,6 @@ public class EnemyController : MonoBehaviour ,IDamageable
         Vector3 randomDir = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1)).normalized;
         navMeshAgent.destination =  transform.position + (randomDir) * Random.Range(1f, 3f);
 
-
     }
 
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
